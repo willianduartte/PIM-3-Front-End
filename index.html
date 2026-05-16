@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>LaVaiPizza - Sua Pizza Favorita</title>
+    <link rel="stylesheet" href="assets/css/normalize.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="models">
+      <div class="pizza-item">
+        <a href="">
+          <div class="pizza-item--img"><img src="" /></div>
+          <div class="pizza-item--add">+</div>
+        </a>
+        <div class="pizza-item--name">--</div>
+        <div class="pizza-item--price">R$ --</div>
+        <div class="pizza-item--desc">--</div>
+      </div>
+
+      <div class="cart--item">
+        <img src="" />
+        <div class="cart--item-nome">--</div>
+        <div class="cart--item--qtarea">
+          <button class="cart--item-qtmenos">-</button>
+          <div class="cart--item--qt">1</div>
+          <button class="cart--item-qtmais">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+      <div class="container">
+        <div class="logo">
+          <img src="assets/images/logo.png" alt="LaVaiPizza Logo" />
+          <span class="logo-name">LaVaiPizza!</span>
+        </div>
+        <nav class="menu-desktop">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#menu">Menu</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <div class="menu-openner"><span>0</span>🛒</div>
+          <a href="#menu" class="btn-pedir" style="text-decoration: none"
+            >PEDIR AGORA</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- SEÇÃO HERO -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-text">
+            <h1>Sua Pizza Favorita, Entregue Quentinha.</h1>
+            <p>
+              As melhores pizzas artesanais com ingredientes selecionados e
+              entrega ultra rápida na sua região.
+            </p>
+            <a href="#menu" class="btn-cardapio">VER CARDÁPIO</a>
+          </div>
+          <div class="hero-img">
+            <img src="assets/images/pizza.png" alt="Pizza Principal" />
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO BENEFÍCIOS -->
+      <section class="benefits">
+        <div class="container">
+          <div class="benefit-item">
+            <div class="benefit-icon">🚚</div>
+            <h3>Entrega Grátis</h3>
+            <p>Para pedidos acima de R$ 50,00.</p>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🔥</div>
+            <h3>Forno a Lenha</h3>
+            <p>Sabor tradicional e inconfundível.</p>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🌿</div>
+            <h3>Ingredientes</h3>
+            <p>Tudo fresco e selecionado.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÁREA DO CARDÁPIO -->
+      <section id="menu" class="menu-section">
+        <div class="container">
+          <h2>Mais Pedidas da Semana</h2>
+          <div class="pizza-area"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Pizzaria LaVaiPizza. Todos os direitos reservados.</p>
+        <p>Rua das Pizzas, 123 - São Paulo/SP | (11) 9999-9999</p>
+      </div>
+    </footer>
+
+    <!-- ASIDE -->
+    <aside>
+      <div class="cart--area">
+        <div class="menu-closer">❌</div>
+        <h1>Suas Pizzas</h1>
+        <div class="cart"></div>
+        <div class="cart--details">
+          <div class="cart--totalitem subtotal">
+            <span>Subtotal</span>
+            <span>R$ --</span>
+          </div>
+          <div class="cart--totalitem desconto">
+            <span>Desconto (-10%)</span>
+            <span>R$ --</span>
+          </div>
+          <div class="cart--totalitem total big">
+            <span>Total</span>
+            <span>R$ --</span>
+          </div>
+          <div class="cart--finalizar">Finalizar a compra</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MODAL -->
+    <div class="pizzaWindowArea">
+      <div class="pizzaWindowBody">
+        <div class="pizzaInfo--cancelMobileButton">Voltar</div>
+        <div class="pizzaBig">
+          <img src="" />
+        </div>
+        <div class="pizzaInfo">
+          <h1>--</h1>
+          <div class="pizzaInfo--desc">--</div>
+          <div class="pizzaInfo--sizearea">
+            <div class="pizzaInfo--sector">Tamanho</div>
+            <div class="pizzaInfo--sizes">
+              <div data-key="0" class="pizzaInfo--size">
+                PEQUENA <span>--</span>
+              </div>
+              <div data-key="1" class="pizzaInfo--size">
+                MÉDIO <span>--</span>
+              </div>
+              <div data-key="2" class="pizzaInfo--size selected">
+                GRANDE <span>--</span>
+              </div>
+            </div>
+          </div>
+          <div class="pizzaInfo--pricearea">
+            <div class="pizzaInfo--sector">Preço</div>
+            <div class="pizzaInfo--price">
+              <div class="pizzaInfo--actualPrice">R$ --</div>
+              <div class="pizzaInfo--qtarea">
+                <button class="pizzaInfo--qtmenos">-</button>
+                <div class="pizzaInfo--qt">1</div>
+                <button class="pizzaInfo--qtmais">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="pizzaInfo--addButton">Adicionar ao carrinho</div>
+          <div class="pizzaInfo--cancelButton">Cancelar</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="assets/js/pizzas.js"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
+  </body>
+</html>
