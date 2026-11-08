@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Acompanhar pedido - LaVaiPizza</title>
+    <link rel="stylesheet" href="assets/css/normalize.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="logo">
+          <img src="assets/images/Logo.png" alt="LaVaiPizza Logo" />
+          <span class="logo-name">LaVaiPizza!</span>
+        </div>
+        <nav class="menu-desktop" aria-label="Principal">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#menu">Menu</a></li>
+            <li><a href="acompanhar.html" aria-current="page">Meu pedido</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="index.html#menu" class="btn-pedir" style="text-decoration: none">PEDIR AGORA</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="acompanhar" id="conteudo" tabindex="-1">
+      <div class="container acompanhar--container">
+        <h1>Acompanhe seu pedido</h1>
+        <p>Digite o código que você recebeu ao finalizar a compra.</p>
+
+        <form id="buscaForm" class="acompanhar--busca">
+          <label for="codigo">Código do pedido</label>
+          <div class="acompanhar--busca-linha">
+            <input id="codigo" name="codigo" type="text" required maxlength="12" autocomplete="off"
+              autocapitalize="characters" spellcheck="false" placeholder="Ex.: LV7K2P9Q"
+              pattern="[A-Za-z0-9]{4,12}" title="Use apenas letras e números" />
+            <button type="submit" class="btn-confirmar">Buscar</button>
+          </div>
+        </form>
+
+        <p class="checkout-erro" id="erro" role="alert" hidden></p>
+
+        <section id="resultado" class="acompanhar--card" aria-label="Andamento do pedido" hidden>
+          <div class="acompanhar--topo">
+            <div>
+              <div class="acompanhar--rotulo">Pedido</div>
+              <div class="codigo-pedido" id="resCodigo">--</div>
+            </div>
+            <div class="acompanhar--status" id="resStatus" role="status" aria-live="polite">--</div>
+          </div>
+
+          <p id="resPrevisao" class="acompanhar--previsao"></p>
+
+          <ol class="timeline" id="timeline" aria-label="Etapas do pedido"></ol>
+
+          <h2>Itens</h2>
+          <ul class="acompanhar--itens" id="resItens"></ul>
+
+          <div class="acompanhar--rodape">
+            <span id="resCliente"></span>
+            <strong id="resTotal">--</strong>
+          </div>
+
+          <p class="acompanhar--atualizacao" id="resAtualizacao"></p>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Pizzaria LaVaiPizza. Todos os direitos reservados.</p>
+        <p>Rua das Pizzas, 123 - São Paulo/SP | (11) 9999-9999</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/acompanhar.js"></script>
+  </body>
+</html>

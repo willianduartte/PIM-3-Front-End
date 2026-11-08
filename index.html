@@ -12,11 +12,13 @@
     />
   </head>
   <body>
+    <a class="skip-link" href="#menu">Pular para o cardápio</a>
     <div class="models">
       <div class="pizza-item">
-        <a href="">
-          <div class="pizza-item--img"><img src="" /></div>
-          <div class="pizza-item--add">+</div>
+        <a href="#">
+          <div class="pizza-item--img"><img src="" alt="" /></div>
+          <span class="pizza-item--badge" hidden></span>
+          <div class="pizza-item--add" aria-hidden="true">+</div>
         </a>
         <div class="pizza-item--name">--</div>
         <div class="pizza-item--price">R$ --</div>
@@ -24,12 +26,15 @@
       </div>
 
       <div class="cart--item">
-        <img src="" />
-        <div class="cart--item-nome">--</div>
+        <img src="" alt="" />
+        <div class="cart--item-info">
+          <div class="cart--item-nome">--</div>
+          <div class="cart--item-preco"></div>
+        </div>
         <div class="cart--item--qtarea">
-          <button class="cart--item-qtmenos">-</button>
+          <button type="button" class="cart--item-qtmenos">-</button>
           <div class="cart--item--qt">1</div>
-          <button class="cart--item-qtmais">+</button>
+          <button type="button" class="cart--item-qtmais">+</button>
         </div>
       </div>
     </div>
@@ -38,17 +43,24 @@
     <header>
       <div class="container">
         <div class="logo">
-          <img src="assets/images/logo.png" alt="LaVaiPizza Logo" />
+          <img src="assets/images/Logo.png" alt="LaVaiPizza Logo" />
           <span class="logo-name">LaVaiPizza!</span>
         </div>
-        <nav class="menu-desktop">
+        <nav class="menu-desktop" aria-label="Principal">
           <ul>
             <li><a href="#">Home</a></li>
             <li><a href="#menu">Menu</a></li>
+            <li><a href="acompanhar.html">Meu pedido</a></li>
           </ul>
         </nav>
         <div class="header-actions">
-          <div class="menu-openner"><span>0</span>🛒</div>
+          <button
+            type="button"
+            class="menu-openner"
+            aria-label="Abrir carrinho"
+          >
+            <span class="menu-openner--qt">0</span>🛒
+          </button>
           <a href="#menu" class="btn-pedir" style="text-decoration: none"
             >PEDIR AGORA</a
           >
@@ -74,22 +86,37 @@
         </div>
       </section>
 
+      <!-- PROMOÇÕES VIGENTES (vêm da API) -->
+      <section
+        class="promo-banner"
+        id="promoBanner"
+        aria-label="Promoções"
+        hidden
+      >
+        <div class="container">
+          <strong>🎉 Promoções de hoje:</strong>
+          <ul id="promoLista"></ul>
+        </div>
+      </section>
+
       <!-- SEÇÃO BENEFÍCIOS -->
       <section class="benefits">
         <div class="container">
           <div class="benefit-item">
             <div class="benefit-icon">🚚</div>
-            <h3>Entrega Grátis</h3>
-            <p>Para pedidos acima de R$ 50,00.</p>
+            <h2 id="beneficioEntregaTitulo">Entrega Rápida</h2>
+            <p id="beneficioEntregaTexto">
+              Entrega ultra rápida na sua região.
+            </p>
           </div>
           <div class="benefit-item">
             <div class="benefit-icon">🔥</div>
-            <h3>Forno a Lenha</h3>
+            <h2>Forno a Lenha</h2>
             <p>Sabor tradicional e inconfundível.</p>
           </div>
           <div class="benefit-item">
             <div class="benefit-icon">🌿</div>
-            <h3>Ingredientes</h3>
+            <h2>Ingredientes</h2>
             <p>Tudo fresco e selecionado.</p>
           </div>
         </div>
@@ -98,7 +125,7 @@
       <!-- ÁREA DO CARDÁPIO -->
       <section id="menu" class="menu-section">
         <div class="container">
-          <h2>Mais Pedidas da Semana</h2>
+          <h2>Nosso Cardápio</h2>
           <div class="pizza-area"></div>
         </div>
       </section>
@@ -112,52 +139,81 @@
       </div>
     </footer>
 
-    <!-- ASIDE -->
-    <aside>
+    <!-- ASIDE (CARRINHO) -->
+    <aside aria-label="Carrinho">
       <div class="cart--area">
-        <div class="menu-closer">❌</div>
-        <h1>Suas Pizzas</h1>
+        <button type="button" class="menu-closer" aria-label="Fechar carrinho">
+          ❌
+        </button>
+        <h2>Suas Pizzas</h2>
         <div class="cart"></div>
         <div class="cart--details">
           <div class="cart--totalitem subtotal">
             <span>Subtotal</span>
             <span>R$ --</span>
           </div>
-          <div class="cart--totalitem desconto">
-            <span>Desconto (-10%)</span>
+          <div class="cart--totalitem desconto" hidden>
+            <span>Desconto</span>
+            <span>R$ --</span>
+          </div>
+          <ul class="cart--promos"></ul>
+          <div class="cart--totalitem entrega">
+            <span>Entrega</span>
             <span>R$ --</span>
           </div>
           <div class="cart--totalitem total big">
             <span>Total</span>
             <span>R$ --</span>
           </div>
-          <div class="cart--finalizar">Finalizar a compra</div>
+          <p class="cart--erro" role="alert" hidden></p>
+          <button type="button" class="cart--finalizar">
+            Finalizar a compra
+          </button>
         </div>
       </div>
     </aside>
 
-    <!-- MODAL -->
+    <!-- MODAL DA PIZZA -->
     <div class="pizzaWindowArea">
-      <div class="pizzaWindowBody">
-        <div class="pizzaInfo--cancelMobileButton">Voltar</div>
+      <div
+        class="pizzaWindowBody"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pizzaModalNome"
+      >
+        <button type="button" class="pizzaInfo--cancelMobileButton">
+          Voltar
+        </button>
         <div class="pizzaBig">
-          <img src="" />
+          <img src="" alt="" />
         </div>
         <div class="pizzaInfo">
-          <h1>--</h1>
+          <h2 id="pizzaModalNome">--</h2>
           <div class="pizzaInfo--desc">--</div>
           <div class="pizzaInfo--sizearea">
             <div class="pizzaInfo--sector">Tamanho</div>
             <div class="pizzaInfo--sizes">
-              <div data-key="0" class="pizzaInfo--size">
+              <button
+                type="button"
+                data-tamanho="Pequena"
+                class="pizzaInfo--size"
+              >
                 PEQUENA <span>--</span>
-              </div>
-              <div data-key="1" class="pizzaInfo--size">
-                MÉDIO <span>--</span>
-              </div>
-              <div data-key="2" class="pizzaInfo--size selected">
+              </button>
+              <button
+                type="button"
+                data-tamanho="Media"
+                class="pizzaInfo--size"
+              >
+                MÉDIA <span>--</span>
+              </button>
+              <button
+                type="button"
+                data-tamanho="Grande"
+                class="pizzaInfo--size selected"
+              >
                 GRANDE <span>--</span>
-              </div>
+              </button>
             </div>
           </div>
           <div class="pizzaInfo--pricearea">
@@ -165,19 +221,208 @@
             <div class="pizzaInfo--price">
               <div class="pizzaInfo--actualPrice">R$ --</div>
               <div class="pizzaInfo--qtarea">
-                <button class="pizzaInfo--qtmenos">-</button>
+                <button
+                  type="button"
+                  class="pizzaInfo--qtmenos"
+                  aria-label="Diminuir quantidade"
+                >
+                  -
+                </button>
                 <div class="pizzaInfo--qt">1</div>
-                <button class="pizzaInfo--qtmais">+</button>
+                <button
+                  type="button"
+                  class="pizzaInfo--qtmais"
+                  aria-label="Aumentar quantidade"
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
-          <div class="pizzaInfo--addButton">Adicionar ao carrinho</div>
-          <div class="pizzaInfo--cancelButton">Cancelar</div>
+          <button type="button" class="pizzaInfo--addButton">
+            Adicionar ao carrinho
+          </button>
+          <button type="button" class="pizzaInfo--cancelButton">
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
 
-    <script type="text/javascript" src="assets/js/pizzas.js"></script>
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <!-- CHECKOUT (dados de entrega) -->
+    <div class="checkout-area" id="checkoutArea" hidden>
+      <div
+        class="checkout-body"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="checkoutTitulo"
+      >
+        <div id="checkoutFormView">
+          <h2 id="checkoutTitulo">Finalizar pedido</h2>
+          <p class="checkout-resumo" id="checkoutResumo"></p>
+
+          <form id="checkoutForm">
+            <div class="campo">
+              <label for="ckNome">Nome completo</label>
+              <input
+                id="ckNome"
+                name="nome"
+                type="text"
+                autocomplete="name"
+                required
+                minlength="2"
+                maxlength="150"
+              />
+            </div>
+            <div class="campo-linha">
+              <div class="campo">
+                <label for="ckTelefone">Telefone com DDD</label>
+                <input
+                  id="ckTelefone"
+                  name="telefone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel-national"
+                  required
+                  maxlength="20"
+                  placeholder="(11) 91234-5678"
+                  pattern="^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$"
+                  title="Informe o DDD e o número, por exemplo (11) 91234-5678"
+                />
+              </div>
+              <div class="campo">
+                <label for="ckEmail">E-mail (opcional)</label>
+                <input
+                  id="ckEmail"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  maxlength="100"
+                />
+              </div>
+            </div>
+            <div class="campo-linha">
+              <div class="campo campo-curto">
+                <label for="ckCep">CEP</label>
+                <input
+                  id="ckCep"
+                  name="cep"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="postal-code"
+                  required
+                  maxlength="9"
+                  placeholder="00000-000"
+                  pattern="^\d{5}-?\d{3}$"
+                  title="Informe o CEP no formato 00000-000"
+                />
+              </div>
+              <div class="campo">
+                <label for="ckLogradouro">Rua</label>
+                <input
+                  id="ckLogradouro"
+                  name="logradouro"
+                  type="text"
+                  autocomplete="address-line1"
+                  required
+                  maxlength="150"
+                />
+              </div>
+            </div>
+            <div class="campo-linha">
+              <div class="campo campo-curto">
+                <label for="ckNumero">Número</label>
+                <input
+                  id="ckNumero"
+                  name="numero"
+                  type="text"
+                  required
+                  maxlength="10"
+                />
+              </div>
+              <div class="campo">
+                <label for="ckComplemento">Complemento (opcional)</label>
+                <input
+                  id="ckComplemento"
+                  name="complemento"
+                  type="text"
+                  autocomplete="address-line2"
+                  maxlength="60"
+                />
+              </div>
+            </div>
+            <div class="campo-linha">
+              <div class="campo">
+                <label for="ckBairro">Bairro</label>
+                <input
+                  id="ckBairro"
+                  name="bairro"
+                  type="text"
+                  required
+                  maxlength="80"
+                />
+              </div>
+              <div class="campo">
+                <label for="ckCidade">Cidade</label>
+                <input
+                  id="ckCidade"
+                  name="cidade"
+                  type="text"
+                  autocomplete="address-level2"
+                  maxlength="80"
+                  value="São Paulo"
+                />
+              </div>
+            </div>
+
+            <p class="checkout-erro" id="checkoutErro" role="alert" hidden></p>
+
+            <div class="checkout-acoes">
+              <button
+                type="button"
+                class="btn-secundario"
+                id="checkoutCancelar"
+              >
+                Voltar ao carrinho
+              </button>
+              <button
+                type="submit"
+                class="btn-confirmar"
+                id="checkoutConfirmar"
+              >
+                Confirmar pedido
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="checkoutSucessoView" hidden>
+          <h2 id="checkoutSucessoTitulo" tabindex="-1">
+            Pedido confirmado! 🍕
+          </h2>
+          <p>Guarde o código para acompanhar o seu pedido:</p>
+          <p class="codigo-pedido" id="sucessoCodigo">--</p>
+          <p id="sucessoDetalhe"></p>
+          <div class="checkout-acoes">
+            <button type="button" class="btn-secundario" id="sucessoCopiar">
+              Copiar código
+            </button>
+            <a
+              class="btn-confirmar"
+              id="sucessoAcompanhar"
+              href="acompanhar.html"
+              >Acompanhar pedido</a
+            >
+          </div>
+          <button type="button" class="link-fechar" id="sucessoFechar">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/script.js"></script>
   </body>
 </html>

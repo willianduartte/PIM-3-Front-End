@@ -1,14 +1,14 @@
 /* 1. CORES E CONFIGURAÇÕES GERAIS */
 
 :root {
-  --primary-color: #f27405;
-  --primary-hover: #d95f04;
+  --primary-color: #b35400; /* escurecido para contraste >= 4,5:1 com texto branco */
+  --primary-hover: #8f4300;
   --dark-color: #3c2a21;
   --light-color: #fdf5e6;
   --white: #ffffff;
   --grey: #f4f4f4;
   --text-color: #333;
-  --btn-action: #e74c3c;
+  --btn-action: #c0392b;
 }
 
 @keyframes float {
@@ -194,6 +194,10 @@ nav ul li a:hover {
   justify-content: space-around;
   gap: 30px;
 }
+.benefit-item h2 {
+  font-size: 1.17em;
+  margin: 0 0 8px;
+}
 .benefit-icon {
   font-size: 40px;
   margin-bottom: 15px;
@@ -306,16 +310,17 @@ nav ul li a:hover {
   flex: 1;
   font-family: 'Montserrat', sans-serif;
 }
-.pizzaInfo h1 {
+.pizzaInfo h2 {
   margin-top: 0;
+  font-size: 2em;
 }
 .pizzaInfo--desc {
-  color: #999;
+  color: #666;
   font-size: 14px;
   margin-bottom: 20px;
 }
 .pizzaInfo--sector {
-  color: #ccc;
+  color: #767676;
   text-transform: uppercase;
   font-size: 12px;
   margin-top: 20px;
@@ -372,7 +377,7 @@ nav ul li a:hover {
 .pizzaInfo--addButton {
   margin-top: 30px;
   padding: 15px 30px;
-  background: #48d05f;
+  background: #1e7a34;
   color: #fff;
   border-radius: 25px;
   display: inline-block;
@@ -383,7 +388,7 @@ nav ul li a:hover {
   display: inline-block;
   cursor: pointer;
   margin-left: 20px;
-  color: #999;
+  color: #666;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -397,7 +402,8 @@ aside {
   right: -100%;
   width: 350px;
   height: 100vh;
-  transition: all ease 0.4s;
+  transition: right ease 0.4s, visibility 0s linear 0.4s;
+  visibility: hidden;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -405,6 +411,8 @@ aside {
 }
 aside.show {
   right: 0;
+  visibility: visible;
+  transition: right ease 0.4s, visibility 0s;
 }
 .cart--area {
   padding: 20px;
@@ -471,7 +479,7 @@ aside.show {
 
 .cart--finalizar {
   display: block;
-  background-color: #48d05f;
+  background-color: #1e7a34;
   color: #fff;
   padding: 15px;
   border-radius: 30px;
@@ -484,7 +492,7 @@ aside.show {
 }
 
 .cart--finalizar:hover {
-  background-color: #35af4a;
+  background-color: #17622a;
 }
 
 footer {
@@ -560,7 +568,7 @@ footer {
     gap: 40px;
     padding: 0 40px;
   }
-  .benefit-item h3 {
+  .benefit-item h2 {
     font-size: 24px;
   }
 
@@ -589,7 +597,7 @@ footer {
     padding-left: 0;
     text-align: center;
   }
-  .pizzaInfo h1 {
+  .pizzaInfo h2 {
     font-size: 22px;
     margin: 10px 0;
   }
@@ -616,10 +624,13 @@ footer {
     width: 100%;
     position: fixed;
     right: -100%;
-    transition: all ease 0.4s;
+    transition: right ease 0.4s, visibility 0s linear 0.4s;
+  visibility: hidden;
   }
   aside.show {
     right: 0;
+  visibility: visible;
+  transition: right ease 0.4s, visibility 0s;
   }
   body.aside-open {
     transform: translateX(-100%);
@@ -634,7 +645,7 @@ footer {
   }
   .cart--finalizar {
     display: block;
-    background-color: #48d05f;
+    background-color: #1e7a34;
     color: #fff;
     padding: 18px;
     border-radius: 30px;
@@ -644,4 +655,519 @@ footer {
     margin-top: 15px;
     cursor: pointer;
   }
+}
+
+/* 8. COMPONENTES DA INTEGRAÇÃO COM A API (cardápio dinâmico, carrinho, checkout, acompanhamento) */
+
+body.modal-aberto {
+  overflow: hidden;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Botões que antes eram divs */
+.menu-openner,
+.menu-closer,
+.pizzaInfo--size,
+.pizzaInfo--addButton,
+.pizzaInfo--cancelButton,
+.pizzaInfo--cancelMobileButton,
+.cart--finalizar {
+  font-family: inherit;
+  border: 0;
+  color: inherit;
+}
+.menu-closer {
+  background: none;
+  padding: 0;
+}
+.pizzaInfo--size {
+  background: transparent;
+}
+.pizzaInfo--size[hidden] {
+  display: none;
+}
+.pizzaInfo--addButton {
+  color: #fff;
+  font-size: 16px;
+}
+.pizzaInfo--cancelButton,
+.pizzaInfo--cancelMobileButton {
+  background: none;
+  font-size: 16px;
+}
+.pizzaInfo--cancelMobileButton {
+  display: none;
+  margin-bottom: 10px;
+}
+.cart--finalizar {
+  width: 100%;
+  font-size: 16px;
+}
+.cart--finalizar:disabled {
+  background-color: #b5b5b5;
+  cursor: not-allowed;
+}
+
+/* Cardápio */
+.pizza-area--mensagem {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
+}
+.pizza-item--badge {
+  position: absolute;
+  top: -6px;
+  right: 6px;
+  background: var(--btn-action);
+  color: #fff;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  z-index: 3;
+}
+.pizza-item--badge[hidden] {
+  display: none;
+}
+.pizza-item--desc {
+  color: #666;
+  font-size: 14px;
+}
+.preco-antigo {
+  color: #666;
+  font-weight: normal;
+  font-size: 0.85em;
+}
+.preco-promo {
+  color: var(--btn-action);
+}
+
+.promo-banner {
+  background: var(--dark-color);
+  color: #fff;
+  padding: 12px 0;
+}
+.promo-banner[hidden] {
+  display: none;
+}
+.promo-banner .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+.promo-banner ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Carrinho */
+.cart--item-info {
+  flex: 1;
+}
+.cart--item-preco {
+  font-size: 13px;
+  color: #666;
+}
+.cart--item--qtarea button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.cart--totalitem[hidden],
+.cart--erro[hidden] {
+  display: none;
+}
+.cart--promos {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 5px;
+  font-size: 12px;
+  color: #1e7a34;
+}
+.cart--erro {
+  color: var(--btn-action);
+  font-size: 14px;
+  margin: 10px 0 0;
+}
+aside.calculando .cart--details {
+  opacity: 0.6;
+}
+
+/* Formulários e botões de ação */
+.btn-confirmar,
+.btn-secundario {
+  display: inline-block;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border: 0;
+  border-radius: 25px;
+  padding: 13px 26px;
+  cursor: pointer;
+}
+.btn-confirmar {
+  background: #1e7a34;
+  color: #fff;
+}
+.btn-confirmar:hover {
+  background: #17622a;
+}
+.btn-confirmar:disabled {
+  background: #b5b5b5;
+  cursor: wait;
+}
+.btn-secundario {
+  background: var(--grey);
+  color: var(--dark-color);
+}
+
+.checkout-area {
+  position: fixed;
+  inset: 0;
+  background: rgba(60, 42, 33, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  z-index: 3000;
+  padding: 20px;
+}
+.checkout-area[hidden] {
+  display: none;
+}
+.checkout-body {
+  background: var(--white);
+  border-radius: 15px;
+  width: 100%;
+  max-width: 620px;
+  padding: 30px;
+  margin: auto;
+}
+.checkout-body h2 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--dark-color);
+  margin: 0 0 5px;
+}
+.checkout-resumo {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin: 0 0 20px;
+}
+.campo {
+  flex: 1;
+  margin-bottom: 14px;
+}
+.campo-curto {
+  flex: 0 0 140px;
+}
+.campo-linha {
+  display: flex;
+  gap: 14px;
+}
+.campo label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 4px;
+}
+.campo input,
+.acompanhar--busca input {
+  width: 100%;
+  font: inherit;
+  padding: 11px 12px;
+  border: 1px solid #767676;
+  border-radius: 8px;
+}
+.campo input:invalid:not(:placeholder-shown):not(:focus) {
+  border-color: var(--btn-action);
+}
+.checkout-erro {
+  background: #fdecea;
+  color: #b3261e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 0 0 14px;
+}
+.checkout-erro[hidden] {
+  display: none;
+}
+.checkout-acoes {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+}
+.codigo-pedido {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 34px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: var(--primary-color);
+  margin: 6px 0;
+}
+.link-fechar {
+  display: block;
+  margin: 18px auto 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+}
+#checkoutSucessoView {
+  text-align: center;
+}
+#checkoutSucessoView .checkout-acoes {
+  justify-content: center;
+}
+#checkoutSucessoView[hidden],
+#checkoutFormView[hidden] {
+  display: none;
+}
+
+/* Página "Acompanhar pedido" */
+.acompanhar {
+  padding: 50px 0 70px;
+  min-height: 60vh;
+  background: var(--grey);
+}
+.acompanhar--container {
+  max-width: 680px;
+}
+.acompanhar h1 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--dark-color);
+  margin-top: 0;
+}
+.acompanhar--busca label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.acompanhar--busca-linha {
+  display: flex;
+  gap: 12px;
+}
+.acompanhar--busca input {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.acompanhar--card {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 26px;
+  margin-top: 24px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+.acompanhar--card[hidden] {
+  display: none;
+}
+.acompanhar--topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.acompanhar--rotulo {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #666;
+}
+.acompanhar--status {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 18px;
+  border-radius: 20px;
+}
+.acompanhar--status[data-status='Entregue'] {
+  background: #1e7a34;
+}
+.acompanhar--previsao {
+  color: #555;
+}
+.acompanhar h2 {
+  font-size: 16px;
+  color: var(--dark-color);
+  margin: 24px 0 8px;
+}
+.acompanhar--itens {
+  margin: 0;
+  padding-left: 20px;
+}
+.acompanhar--rodape {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #eee;
+  margin-top: 18px;
+  padding-top: 14px;
+  font-size: 18px;
+}
+.acompanhar--atualizacao {
+  font-size: 12px;
+  color: #666;
+  margin: 12px 0 0;
+}
+
+.timeline {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+}
+.timeline--etapa {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 0 22px 34px;
+  color: #666;
+}
+.timeline--etapa::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: #ddd;
+}
+.timeline--etapa:last-child {
+  padding-bottom: 0;
+}
+.timeline--etapa:last-child::before {
+  display: none;
+}
+.timeline--etapa::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #767676;
+}
+.timeline--etapa.concluida {
+  color: var(--dark-color);
+}
+.timeline--etapa.concluida::before {
+  background: #1e7a34;
+}
+.timeline--etapa.concluida::after {
+  background: #1e7a34;
+  border-color: #1e7a34;
+}
+.timeline--etapa.atual {
+  color: var(--dark-color);
+  font-weight: bold;
+}
+.timeline--etapa.atual::after {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+}
+.timeline--hora {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+@media (max-width: 740px) {
+  .pizzaInfo--cancelMobileButton {
+    display: block;
+  }
+  .campo-linha {
+    flex-direction: column;
+    gap: 0;
+  }
+  .campo-curto {
+    flex: 1;
+  }
+  .checkout-body {
+    padding: 20px;
+  }
+  .checkout-acoes > * {
+    flex: 1;
+  }
+  .acompanhar--busca-linha {
+    flex-direction: column;
+  }
+  nav ul {
+    margin: 0;
+  }
+}
+
+/* Etapa final concluida fica verde (a "atual" laranja so vale enquanto o pedido esta em andamento) */
+.timeline--etapa.atual.concluida::after {
+  background: #1e7a34;
+  border-color: #1e7a34;
+}
+
+/* Acessibilidade */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 5000;
+  background: #fff;
+  color: var(--dark-color);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+.skip-link:focus {
+  left: 8px;
+}
+.cart--area h2 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+main:focus {
+  outline: none;
+}
+
+/* Quem prefere menos movimento nao recebe animacoes */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Telas muito estreitas (320px): o menu cabe sem rolagem horizontal; "Pedir agora" fica no link Menu */
+@media (max-width: 480px) {
+  .btn-pedir {
+    display: none;
+  }
+  nav ul {
+    gap: 6px;
+    margin: 0;
+  }
+  nav ul li a {
+    font-size: 13px;
+  }
+}
+
+/* O reset de botoes (color: inherit) vem depois; o texto do botao verde precisa continuar branco */
+.cart--finalizar {
+  color: #fff;
 }
