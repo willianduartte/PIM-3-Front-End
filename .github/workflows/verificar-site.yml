@@ -1,0 +1,32 @@
+name: Verificar site
+
+# O site e estatico (HTML + JS + CSS). Aqui conferimos o que costuma quebrar depois de publicar.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Erro de sintaxe em JavaScript derruba a pagina inteira
+      - name: Sintaxe dos scripts
+        run: |
+          for arquivo in assets/js/*.js; do
+            echo "Conferindo $arquivo"
+            node --check "$arquivo"
+          done
+
+      # No GitHub Pages (Linux) "Logo.png" e "logo.png" sao arquivos diferentes; no Windows nao
+      - name: Arquivos referenciados existem (com maiusculas/minusculas corretas)
+        run: node .github/scripts/verificar-referencias.js
